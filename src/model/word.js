@@ -11,15 +11,29 @@ const WordSchema = new Schema(
       type: String,
       required: true,
     },
-    audio_url: {
+    phonetic: {
+      text: {
+        type: String,
+        trim: true,
+      },
+      audio: {
+        type: String,
+        trim: true,
+        required: true,
+      },
+    },
+    parts_of_speech: {
       type: String,
-      trim: true,
-      required: true,
     },
     definitions: {
       type: [String],
-      trim: true,
       required: true,
+    },
+    example:{
+      type:String
+    },
+    synonyms:{
+      type:[String]
     },
     userIds: [
       {
