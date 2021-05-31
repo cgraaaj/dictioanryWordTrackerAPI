@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require('cors')
 // const { graphqlHTTP } = require("express-graphql");
 const { ApolloServer } = require("apollo-server-express");
 const graphqlSchema = require("./schemas/index");
@@ -12,7 +13,7 @@ const graphqlSchema = require("./schemas/index");
 // };
 
 const app = express();
-// app.use(logger);
+app.use(cors());
 const server = new ApolloServer({
   schema: graphqlSchema,
   cors: true,
