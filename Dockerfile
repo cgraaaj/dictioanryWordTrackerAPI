@@ -1,7 +1,8 @@
-FROM node:latest
+FROM node
 WORKDIR /app
 
+COPY package.json ./
+RUN npm install --silent
 COPY . .
-RUN npm install
 
 ENTRYPOINT ["npm", "start"]
