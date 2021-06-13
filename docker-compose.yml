@@ -1,0 +1,54 @@
+version: "3.7"
+
+services:
+  server_graphql:
+    container_name: wordTrackerAPI
+    env_file: .env
+    build:
+      context: .
+    ports:
+      - 3005:3005
+    depends_on: 
+      - db
+    environment:
+      - TZ=Asia/Kolkata
+      - MONGO_USERNAME=$MONGO_USERNAME
+      - MONGO_PASSWORD=$MONGO_PASSWORD
+      - MONGO_HOSTNAME=db
+      - MONGO_PORT=$MONGO_PORT
+      - MONGO_DB=$MONGO_DB
+    networks:
+      - pi_dictionary
+      - pi_dictionary_internal
+    restart: unless-stopped
+
+  db:
+    image: mongo
+    container_name: mongodb
+    volumes: 
+      - /home/pudge/Docker/dictionary/wordTracker_GraphQL/data:/data/db
+    ports: 
+      - 27017:27017
+    env_file: .env
+    environment:
+      - TZ=Asia/Kolkata
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
+    networks: 
+      - pi_dictionary_internal
+    restart: unless-stopped
+
+networks:
+  pi_dictionary: # Exposed by your host.
+    # external: true
+    name: pi_dictionary_default
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.30.05.0/24
+
+  pi_dictionary_internal: # Network for NextCloud service
+    name: PiOnestack_dictionary
+    driver: bridge
+    internal: true
